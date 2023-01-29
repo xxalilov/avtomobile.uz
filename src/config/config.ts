@@ -8,31 +8,36 @@ interface ENV {
     PORT: string | undefined;
 }
 
-interface Config {
+interface ConfigInterface {
     NODE_ENV: string;
     PORT: string;
 }
 
-const getConfig = (): ENV => {
-    return {
-        NODE_ENV: process.env.NODE_ENV,
-        PORT: process.env.PORT
+class Config {
+    private getConfig (): ENV {
+        return {
+            NODE_ENV: process.env.NODE_ENV,
+            PORT: process.env.PORT
+        }
+    }
+
+    private getSanitzedConfig(config: ENV): ConfigInterface {
+        for (const [key, value] of Object.entries(config)) {
+            if (value === undefined) {
+                throw new Error(`Missing key ${key} in config.env`);
+            }
+        }
+
+        return config as ConfigInterface;
+    }
+
+    public sanitizedConfig(): ConfigInterface {
+        return this.getSanitzedConfig(this.getConfig());
     }
 }
 
-const getSanitzedConfig = (config: ENV): Config => {
-    for (const [key, value] of Object.entries(config)) {
-        if (value === undefined) {
-            throw new Error(`Missing key ${key} in config.env`);
-        }
-    }
-    return config as Config;
-};
+const config = new Config();
 
-const config = getConfig();
+const configEnv = config.sanitizedConfig();
 
-const sanitizedConfig = getSanitzedConfig(config);
-
-const PORT = 3000;
-
-export { PORT };
+export default configEnv;
