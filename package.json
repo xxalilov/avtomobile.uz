@@ -2,7 +2,7 @@
   "name": "avtomobile.uz",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "start:build": "tsc -w",
     "start:run": "nodemon dist/server.js",

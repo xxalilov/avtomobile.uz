@@ -38,6 +38,4 @@ class Config {
 
 const config = new Config();
 
-const configEnv = config.sanitizedConfig();
-
-export default configEnv;
+export default config.sanitizedConfig();

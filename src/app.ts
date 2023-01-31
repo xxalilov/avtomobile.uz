@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { json } from 'express';
 import config from './config/config';
 
 class App {
@@ -8,6 +8,11 @@ class App {
     constructor() {
         this.app = express();
         this.port = config.PORT;
+        this.initializeMiddleware();
+    }
+
+    private initializeMiddleware(): void {
+        this.app.use(json());
     }
 
     public listen(): void {
