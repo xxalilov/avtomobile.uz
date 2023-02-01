@@ -1,4 +1,7 @@
 import express, { json } from 'express';
+import cookieParser from 'cookie-parser';
+import './controllers/auth.controller';
+import { router as controllerRouter } from './decorators/controller.decorator'
 import config from './config/config';
 
 class App {
@@ -9,10 +12,16 @@ class App {
         this.app = express();
         this.port = config.PORT;
         this.initializeMiddleware();
+        this.initializeRoutes();
     }
 
     private initializeMiddleware(): void {
         this.app.use(json());
+        this.app.use(cookieParser());
+    }
+
+    private initializeRoutes(): void {
+        this.app.use(controllerRouter)
     }
 
     public listen(): void {
