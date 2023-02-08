@@ -1,18 +1,23 @@
 import express, { json } from 'express';
 import cookieParser from 'cookie-parser';
-import './controllers/auth.controller';
-import { router as controllerRouter } from './decorators/controller.decorator'
 import config from './config/config';
+import { errorHandler } from './middlewares/error-handler.middleware';
+import { NotFoundError } from './errors/not-found.error';
+
+import IndexRouter from './routes';
 
 class App {
     public app: express.Application;
+    public router: IndexRouter;
     private port: string | number;
 
     constructor() {
         this.app = express();
         this.port = config.PORT;
+        this.router = new IndexRouter();
         this.initializeMiddleware();
         this.initializeRoutes();
+        this.initializeErrorHandler();
     }
 
     private initializeMiddleware(): void {
@@ -21,7 +26,15 @@ class App {
     }
 
     private initializeRoutes(): void {
-        this.app.use(controllerRouter)
+        this.app.use('/api/v1', this.router.app);
+        this.app.all('*', async () => {
+            throw new NotFoundError('Route Not Found');
+        })
+    }
+
+    private initializeErrorHandler(): void {
+        console.log("HELLO")
+        this.app.use(errorHandler)
     }
 
     public listen(): void {
