@@ -4,17 +4,16 @@ import config from './config/config';
 import { errorHandler } from './middlewares/error-handler.middleware';
 import { NotFoundError } from './errors/not-found.error';
 
-import IndexRouter from './routes';
+import { AppRouter } from './routes/app.router';
+import './controllers/auth.controller';
 
 class App {
     public app: express.Application;
-    public router: IndexRouter;
     private port: string | number;
 
     constructor() {
         this.app = express();
         this.port = config.PORT;
-        this.router = new IndexRouter();
         this.initializeMiddleware();
         this.initializeRoutes();
         this.initializeErrorHandler();
@@ -26,14 +25,13 @@ class App {
     }
 
     private initializeRoutes(): void {
-        this.app.use('/api/v1', this.router.app);
-        this.app.all('*', async () => {
-            throw new NotFoundError('Route Not Found');
-        })
+        this.app.use('/api/v1', AppRouter.getInstance());
+        // this.app.all('*', async () => {
+        //     throw new NotFoundError('Route Not Found');
+        // })
     }
 
     private initializeErrorHandler(): void {
-        console.log("HELLO")
         this.app.use(errorHandler)
     }
 
