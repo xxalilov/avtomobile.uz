@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import config from './config/config';
 import { errorHandler } from './middlewares/error-handler.middleware';
 import { NotFoundError } from './errors/not-found.error';
+import { asyncHandler } from './middlewares/async.middleware';
 
 import { AppRouter } from './routes/app.router';
 import './controllers/auth.controller';
@@ -26,9 +27,9 @@ class App {
 
     private initializeRoutes(): void {
         this.app.use('/api/v1', AppRouter.getInstance());
-        // this.app.all('*', async () => {
-        //     throw new NotFoundError('Route Not Found');
-        // })
+        this.app.all('*', asyncHandler(async () => {
+            throw new NotFoundError("Route Not Found.")
+        }))
     }
 
     private initializeErrorHandler(): void {
