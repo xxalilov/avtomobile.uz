@@ -4,9 +4,10 @@ import config from './config/config';
 import { errorHandler } from './middlewares/error-handler.middleware';
 import { NotFoundError } from './errors/not-found.error';
 import { asyncHandler } from './middlewares/async.middleware';
+import database from './utils/database';
 
 import { AppRouter } from './routes/app.router';
-import './controllers/auth.controller';
+import './routes/index';
 
 class App {
     public app: express.Application;
@@ -16,6 +17,7 @@ class App {
         this.app = express();
         this.port = config.PORT;
         this.initializeMiddleware();
+        this.connectDatabase();
         this.initializeRoutes();
         this.initializeErrorHandler();
     }
@@ -23,6 +25,12 @@ class App {
     private initializeMiddleware(): void {
         this.app.use(json());
         this.app.use(cookieParser());
+    }
+
+    private connectDatabase(): void {
+        database.connect(() => {
+            console.log("Database Connected")
+        });
     }
 
     private initializeRoutes(): void {
