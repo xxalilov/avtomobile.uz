@@ -28,9 +28,7 @@ class App {
     }
 
     private connectDatabase(): void {
-        database.connect(() => {
-            console.log("Database Connected")
-        });
+        database();
     }
 
     private initializeRoutes(): void {
@@ -46,7 +44,9 @@ class App {
 
     public listen(): void {
         this.app.listen(this.port, () => {
-            console.log(`App is listening on the PORT: ${this.port}`);
+            console.log("================================================")
+            console.log(`🚀 App is listening on the PORT: ${this.port}`);
+            console.log("================================================")
         })
     }
 }

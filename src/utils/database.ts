@@ -1,11 +1,20 @@
-import {Pool} from 'pg';
+import { Sequelize } from "sequelize";
+import config from "../config/config";
 
-const pool = new Pool({
-    user: "postgres",
-    database: "avtomobile.uz",
-    password: "postgres",
-    port: 5432,
-    host: 'localhost'
-})
+const sequelize = new Sequelize(config.DB_DATABASE, config.DB_USER, config.DB_PASSWORD, {
+    dialect: 'postgres',
+    host: config.DB_HOST,
+    port: parseInt(config.DB_PORT),
+    timezone: "+09:00"
+});
 
-export default pool;
+const DB = async function() {
+    try {
+        await sequelize.sync({force: false});
+        console.log("Connected to DATABASE")
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export default DB;
