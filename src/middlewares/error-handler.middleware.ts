@@ -1,20 +1,17 @@
-import {Request, Response, NextFunction} from "express";
-import {CustomError} from "../errors/custom.error";
+import { Request, Response, NextFunction } from "express";
+import { HttpsException } from "../exeptions/HttpException";
 
-export const errorHandler = (
-    err: Error,
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+const errorMiddleware = (error: HttpsException, req: Request, res: Response, next: NextFunction) => {
+    try{
+        const status: number = error.status || 500;
+        const message: string = error.message || "Something went wrong";
 
-    console.log(err);
+        console.log(error)
 
-    if (err instanceof CustomError) {
-        return res.status(err.statusCode).json({errors: err.serializeErrors()});
+        res.status(status).json({message});
+    }catch (error) {
+        next(error)
     }
+}
 
-    res.status(500).json({
-        errors: [{message: "Something went wrong"}],
-    });
-};
+export default errorMiddleware;

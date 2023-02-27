@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import config from "../config/config";
 
-const sequelize = new Sequelize(config.DB_DATABASE, config.DB_USER, config.DB_PASSWORD, {
+export const sequelize = new Sequelize(config.DB_DATABASE, config.DB_USER, config.DB_PASSWORD, {
     dialect: 'postgres',
     host: config.DB_HOST,
     port: parseInt(config.DB_PORT),

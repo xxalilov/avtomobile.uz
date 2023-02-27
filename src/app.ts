@@ -1,9 +1,8 @@
 import express, { json } from 'express';
 import cookieParser from 'cookie-parser';
 import config from './config/config';
-import { errorHandler } from './middlewares/error-handler.middleware';
-import { NotFoundError } from './errors/not-found.error';
-import { asyncHandler } from './middlewares/async.middleware';
+import errorMiddleware from './middlewares/error-handler.middleware';
+import { HttpsException } from './exeptions/HttpException'
 import database from './utils/database';
 
 import { AppRouter } from './routes/app.router';
@@ -25,6 +24,7 @@ class App {
     private initializeMiddleware(): void {
         this.app.use(json());
         this.app.use(cookieParser());
+        this.app.use(errorMiddleware)
     }
 
     private connectDatabase(): void {
@@ -33,13 +33,13 @@ class App {
 
     private initializeRoutes(): void {
         this.app.use('/api/v1', AppRouter.getInstance());
-        this.app.all('*', asyncHandler(async () => {
-            throw new NotFoundError("Route Not Found.")
-        }))
+        this.app.all('*', () => {
+            throw new HttpsException(400, "Route Not Found")
+        })
     }
 
     private initializeErrorHandler(): void {
-        this.app.use(errorHandler)
+        this.app.use(errorMiddleware)
     }
 
     public listen(): void {

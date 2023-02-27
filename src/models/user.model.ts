@@ -1,9 +1,10 @@
 import { DataTypes, Model, Optional, Sequelize } from "sequelize";
+import { sequelize } from '../utils/database'
 import { User } from "../interfaces/user.interface";
 
 export type UserCreationAttributes = Optional<User, 'id' | 'email' | 'password'>;
 
-export class UserModel extends Model<User, UserCreationAttributes> implements User {
+class UserModel extends Model<User, UserCreationAttributes> implements User {
     declare id: string;
     declare email: string;
     declare password: string;
@@ -11,8 +12,6 @@ export class UserModel extends Model<User, UserCreationAttributes> implements Us
     declare readonly createdAt: Date;
     declare readonly updatedAt: Date;
 }
-
-export default function (sequelize: Sequelize): typeof UserModel {
     UserModel.init({
         id: {
             primaryKey: true,
@@ -32,5 +31,4 @@ export default function (sequelize: Sequelize): typeof UserModel {
         sequelize
     });
 
-    return UserModel;
-}
+    export default UserModel;
