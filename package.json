@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/xxalilov/avtomobile.uz#readme",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/express": "^4.17.16",
     "@types/pg": "^8.6.6",
@@ -30,6 +31,7 @@
     "ts-node-dev": "^2.0.0"
   },
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",

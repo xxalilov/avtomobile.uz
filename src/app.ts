@@ -2,7 +2,7 @@ import express, { json } from 'express';
 import cookieParser from 'cookie-parser';
 import config from './config/config';
 import errorMiddleware from './middlewares/error-handler.middleware';
-import { HttpsException } from './exeptions/HttpException'
+import { HttpException } from './exeptions/HttpException'
 import database from './utils/database';
 
 import { AppRouter } from './routes/app.router';
@@ -34,7 +34,7 @@ class App {
     private initializeRoutes(): void {
         this.app.use('/api/v1', AppRouter.getInstance());
         this.app.all('*', () => {
-            throw new HttpsException(400, "Route Not Found")
+            throw new HttpException(400, "Route Not Found")
         })
     }
 
