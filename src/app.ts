@@ -5,8 +5,7 @@ import errorMiddleware from './middlewares/error-handler.middleware';
 import { HttpException } from './exeptions/HttpException'
 import database from './utils/database';
 
-import { AppRouter } from './routes/app.router';
-import './routes/index';
+import UserRoute from './routes/users.route';
 
 class App {
     public app: express.Application;
@@ -32,7 +31,7 @@ class App {
     }
 
     private initializeRoutes(): void {
-        this.app.use('/api/v1', AppRouter.getInstance());
+        this.app.use('/api/v1', (new UserRoute()).router);
         this.app.all('*', () => {
             throw new HttpException(400, "Route Not Found")
         })
