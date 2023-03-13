@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import config from "../config/config";
+import UserModel from "../models/user.model";
 
 export const sequelize = new Sequelize(config.DB_DATABASE, config.DB_USER, config.DB_PASSWORD, {
     dialect: 'postgres',
@@ -15,6 +16,10 @@ const DB = async function() {
     } catch (error) {
         console.log(error)
     }
+}
+
+export const models = {
+    Users: UserModel(sequelize)
 }
 
 export default DB;

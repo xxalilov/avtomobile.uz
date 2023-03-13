@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import UserService from "../services/user.service";
 import { User } from "../interfaces/user.interface";
+import { CreateUserDto } from "dtos/user.dto";
 
 class UserController {
-    private userService = UserService;
+    private userService = new UserService()
 
     public async getAllUsers(req: Request, res: Response, next: NextFunction) {
         try {
@@ -16,10 +17,20 @@ class UserController {
 
     public async createUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const createdUser = await this.userService.createUser(req.body);
+            const userData: CreateUserDto = req.body;
+            const createdUser = await this.userService.createUser(userData);
             res.status(201).json({
-                data: createdUser, message: 'createUser'
+                data: createdUser, message: 'created'
             })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    public async getUserById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const findOneUserData: User = await this.userService.findUserById(req.params.id);
+            res.status(200).json({data: findOneUserData, message: "findOne"})
         } catch (error) {
             next(error)
         }
