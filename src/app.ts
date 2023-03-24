@@ -6,6 +6,7 @@ import { HttpException } from './exeptions/HttpException'
 import database from './utils/database';
 
 import UserRoute from './routes/users.route';
+import AuthRouter from './routes/auth.router';
 
 class App {
     public app: express.Application;
@@ -32,6 +33,7 @@ class App {
 
     private initializeRoutes(): void {
         this.app.use('/api/v1', (new UserRoute()).router);
+        this.app.use('/api/v1', (new AuthRouter()).router)
         this.app.all('*', () => {
             throw new HttpException(400, "Route Not Found")
         })

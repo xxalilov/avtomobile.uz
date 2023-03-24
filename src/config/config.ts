@@ -11,6 +11,7 @@ interface ENV {
     DB_PASSWORD: string | undefined;
     DB_PORT: string | undefined;
     DB_HOST: string | undefined;
+    SECRET_KEY: string | undefined;
 }
 
 interface ConfigInterface {
@@ -21,6 +22,7 @@ interface ConfigInterface {
     DB_PASSWORD: string;
     DB_PORT: string;
     DB_HOST: string;
+    SECRET_KEY: string;
 }
 
 class Config {
@@ -33,6 +35,7 @@ class Config {
             DB_PASSWORD: process.env.DB_PASSWORD,
             DB_PORT: process.env.DB_PORT,
             DB_HOST: process.env.DB_HOST,
+            SECRET_KEY: process.env.SECRET_KEY
         }
     }
 
